@@ -37,16 +37,16 @@ def capture_image():
             ndarray = np.asarray(face_img)
             obj = BRISQUE(url=False)
             quality = obj.score(img=ndarray)
-            if quality <= 40:
+            if quality <= 30:
                 cv2.imwrite('centralized_face.png', face_img)
                 return {"message": "Image saved as centralized_face.png", "quality_score": quality}
             else:
                 return {"message": "Poor image quality, retake", "quality_score": quality}
 
         # Optionally, you can display the frame for debugging purposes
-        # cv2.imshow('Video', frame)
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
+        cv2.imshow('Video', frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
 
     cap.release()
     cv2.destroyAllWindows()
