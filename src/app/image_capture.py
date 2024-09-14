@@ -38,7 +38,7 @@ def capture_image():
             obj = BRISQUE(url=False)
             quality = obj.score(img=ndarray)
             if quality <= 30:
-                cv2.imwrite('centralized_face.png', face_img)
+                cv2.imwrite('../assets/centralized_face.png', face_img)
                 return {"message": "Image saved as centralized_face.png", "quality_score": quality}
             else:
                 return {"message": "Poor image quality, retake", "quality_score": quality}
