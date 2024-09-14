@@ -31,11 +31,11 @@ Mnemosyne is a comprehensive facial recognition and information retrieval system
   ```
 2. Access the system through your web browser at `http://localhost:5000`.
 
-<!-- ## Contributing
+## Contributing
 
 We welcome contributions! Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
 
-## License
+<!-- ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more information.
 
