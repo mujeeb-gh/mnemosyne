@@ -55,7 +55,7 @@ def capture_image():
 
             if quality <= 40:
                 # Save the face image
-                cv2.imwrite('centralized_face.png', face_img)
+                cv2.imwrite('assets\centralized_face.png', face_img)
 
                 # Perform anti-spoofing
                 img_path = 'assets\centralized_face.png'
