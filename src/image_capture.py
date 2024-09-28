@@ -56,11 +56,11 @@ def capture_image():
             print(f"Image Quality Score: {quality}")
 
             if quality <= 40:
-                cv2.imwrite('centralized_face.png', face_img)
+                cv2.imwrite('assets\centralized_face.png', face_img)
                 print("Image saved as centralized_face.png")
 
                 # Perform anti-spoofing only
-                img_path= 'centralized_face.png'
+                img_path= 'assets\centralized_face.png'
                 face_objs = DeepFace.extract_faces(img_path=img_path, anti_spoofing=True)
 
                 face=face_objs[0]

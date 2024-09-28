@@ -58,7 +58,7 @@ def capture_image():
                 cv2.imwrite('centralized_face.png', face_img)
 
                 # Perform anti-spoofing
-                img_path = 'centralized_face.png'
+                img_path = 'assets\centralized_face.png'
                 face_objs = DeepFace.extract_faces(img_path=img_path, anti_spoofing=True)
 
                 face = face_objs[0]
