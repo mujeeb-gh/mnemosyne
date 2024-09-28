@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from brisque import BRISQUE
 from deepface import DeepFace
-from settings import DEFAULT_CAM, IP_WEBCAM_IP
+from settings import DEFAULT_CAM
 
 # Load the Haar Cascade for face detection
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
@@ -71,9 +71,8 @@ def capture_image():
                 return {"message": "Image saved as centralized_face.png", "IS image real": Spoof_verification , "quality_score": spoof_confidence}
             else:
                 return {"message": "Poor image quality, retake", "quality_score": quality}
-
-    cap.release()
-    cv2.destroyAllWindows()
+        cap.release()
+        cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     capture_image()
