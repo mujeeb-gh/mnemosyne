@@ -1,94 +1,94 @@
+import tensorflow as tf
+from flask import Flask, jsonify
 import cv2
 import numpy as np
 from brisque import BRISQUE
 from deepface import DeepFace
-from settings import DEFAULT_CAM
-import logging
-
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # Load the Haar Cascade for face detection
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-def initialize_camera(cam_source):
-    cap = cv2.VideoCapture(cam_source)
-    if not cap.isOpened():
-        logging.error("Camera failed to open.")
-        return None
-    return cap
-
-def capture_frame(cap):
-    ret, frame = cap.read()
-    if not ret:
-        logging.error("Failed to grab frame.")
-        return None
-    return frame
-
-def detect_faces(frame):
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(100, 100))
-    return faces
-
-def adjust_face_coordinates(x, y, w, h):
-    neck_extension = int(1.5 * h)
-    new_h = h + neck_extension
-
-    head_extension = int(0.8 * h)
-    new_y = max(0, y - head_extension)
-
-    width_extension = int(0.8 * w)
-    new_x = max(0, x - width_extension // 2)
-    new_w = w + width_extension
-
-    return new_x, new_y, new_w, new_h
-
-def check_image_quality(face_img):
-    ndarray = np.asarray(face_img)
-    obj = BRISQUE(url=False)
-    quality = obj.score(img=ndarray)
-    logging.info(f"Image Quality Score: {quality}")
-    return quality
-
-def save_image(face_img, path='assets/centralized_face.png'):
-    cv2.imwrite(path, face_img)
-    logging.info(f"Image saved as {path}")
-    return path
-
-def perform_anti_spoofing(img_path):
-    face_objs = DeepFace.extract_faces(img_path=img_path, anti_spoofing=True)
-    face = face_objs[0]
-    return face["is_real"], face["antispoof_score"]
-
+# Function for capturing image and quality check
 def capture_image():
-    cap = initialize_camera(DEFAULT_CAM)
-    if not cap:
+    # Initialize the camera
+    cap = cv2.VideoCapture(0)
+    
+    if not cap.isOpened():
+        print("Camera failed to open.")
         return {"error": "Could not open camera."}
 
     while True:
-        frame = capture_frame(cap)
-        if frame is None:
+        # Capture frame-by-frame
+        ret, frame = cap.read()
+        
+        if not ret:
+            print("Failed to grab frame.")
             return {"error": "Failed to grab frame."}
+        
+        # Show the live feed
+        cv2.imshow('Video Feed', frame)
+        
+        # Convert frame to grayscale for face detection
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-        faces = detect_faces(frame)
+        # Detect faces in the frame
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(100, 100))
+
+        # If faces are detected
         if len(faces) > 0:
             (x, y, w, h) = faces[0]
-            logging.info(f"Face coordinates: {x}, {y}, {w}, {h}")
+            print("Face coordinates:", x, y, w, h)
 
-            new_x, new_y, new_w, new_h = adjust_face_coordinates(x, y, w, h)
+            # Add neck, head, and width adjustments
+            neck_extension = int(1.5 * h)
+            new_h = h + neck_extension
+
+            head_extension = int(0.8 * h)
+            new_y = max(0, y - head_extension)
+
+            width_extension = int(0.8 * w)
+            new_x = max(0, x - width_extension // 2)
+            new_w = w + width_extension
+            
+            # Extract the face image with the adjustments
             face_img = frame[new_y:new_y + new_h, new_x:new_x + new_w]
 
-            quality = check_image_quality(face_img)
-            if quality <= 50:
-                img_path = save_image(face_img)
-                is_real, spoof_confidence = perform_anti_spoofing(img_path)
-                logging.info(f"Spoof Verification: {is_real}, Confidence: {spoof_confidence}")
-                return {"message": "Image saved as centralized_face.png", "IS image real": is_real, "quality_score": spoof_confidence}
-            else:
-                return {"message": "Poor image quality, retake", "quality_score": quality}
+            # Convert the face image to a NumPy array
+            ndarray = np.asarray(face_img)
 
-        cap.release()
-        cv2.destroyAllWindows()
+            # Run the BRISQUE quality check
+            obj = BRISQUE(url=False)
+            quality = obj.score(img=ndarray)
+
+            # Perform anti-spoofing using DeepFace
+            try:
+                face_objs = DeepFace.extract_faces(img_path=ndarray, anti_spoofing=True)
+                face = face_objs[0]
+                spoof_confidence = face["is_real"]
+
+            except Exception as e:
+                print(f"Anti-spoofing error: {str(e)}")
+                continue  # Skip this iteration if there's an issue with detection
+            if spoof_confidence == False:
+                cv2.imwrite('assets/spoofed.png', face_img)
+                print("Spoofed Image Detected, Use Real Face!!")
+                break
+            if quality < 40:
+                cv2.imwrite('assets/centralized_face.png', face_img)
+                print("Image saved as centralized_face.png")
+                print(f"Image Quality Score: {quality}")
+                print(f"Anti-Spoofing Confidence: {spoof_confidence}")
+                break  # Exit the loop if both criteria are satisfied
+            else:
+                print(f"Quality: {quality}, Spoof Confidence: {spoof_confidence}")
+        
+        # Exit on pressing 'q'
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # Release the capture and close windows
+    cap.release()
+    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     capture_image()
