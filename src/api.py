@@ -97,7 +97,7 @@ def capture():
                 return jsonify({"message": "Spoofed Image Detected, Use Real Face!!"}), 400
 
             if quality < 45:
-                cv2.imwrite('../assets/centralized_face.png', face_img)
+                cv2.imwrite('assets/centralized_face.png', face_img)
                 logging.info("Image saved as centralized_face.png")
                 logging.info(f"Image Quality Score: {quality}")
                 logging.info(f"Anti-Spoofing Confidence: {spoof_confidence}")
