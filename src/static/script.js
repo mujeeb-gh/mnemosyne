@@ -61,7 +61,7 @@ document.getElementById("ipWebcamUrl").addEventListener("input", () => {
     const ipWebcamUrl = document.getElementById("ipWebcamUrl").value;
     const video = document.getElementById("video");
     if (ipWebcamUrl) {
-      video.src = `/video?source=${ipWebcamUrl}`;
+      video.src = `/video?source=${ipWebcamUrl}/video`;
     }
   }
 });
