@@ -13,7 +13,6 @@ def get_face_embedding(img_path, model_name: Literal['VGG-Face', 'Facenet', 'Ope
   embedding_vector = face_embedding[0]['embedding']
   embedding_dimension = len(embedding_vector)
   print(f"Embedding dimension: {embedding_dimension}")
-  print(face_embedding)
   return embedding_vector
 
 img_path = 'assets\centralized_face.png'
