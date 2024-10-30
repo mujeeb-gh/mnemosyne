@@ -167,3 +167,7 @@ cython_debug/
 assets/
 assets/centralized_face.png
 
+# Ignore vector database folder
+vector_db
+
+
