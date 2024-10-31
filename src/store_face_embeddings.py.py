@@ -5,14 +5,14 @@ from datetime import datetime
 
 # Initialize Chroma client and collection
 chroma_client= chromadb.PersistentClient(path='vector_db')
-collection = chroma_client.get_or_create_collection(name="Face_collection")
+collection = chroma_client.get_collection(name="Face_collection")
 
 # Define the path and get the embedding for the image
 img_path = 'assets/centralized_face.png'
 face_embedding = get_face_embedding(img_path, model_name='VGG-Face')
 
 # Generate a unique ID for each entry
-matric_no = '20/sci01/029'  # Replace with actual matric numbers or identifiers if unique per student
+matric_no = '20/sci01/031'  # Replace with actual matric numbers or identifiers if unique per student
 # Appends a unique UUID to the matric number
 
 # Define metadata
@@ -32,10 +32,5 @@ collection.add(
     metadatas=[metadata],
     ids=[matric_no]
 )
-
-# Print collection information
-print("Collection name:", collection.name)
-print("Number of embeddings:", collection.count())
-
 # Verify the latest entry
 print("Last entry metadata:", collection.get(ids=[matric_no]))
