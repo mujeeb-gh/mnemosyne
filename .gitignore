@@ -123,6 +123,7 @@ celerybeat.pid
 
 # Environments
 .env
+myenv/
 .venv
 env/
 venv/
@@ -161,4 +162,12 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-vector_db/
+# Image files
+*.png
+assets/
+assets/centralized_face.png
+
+# Ignore vector database folder
+vector_db
+
+
