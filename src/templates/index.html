@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="shortcut icon" href="../assets/favicon.png" type="image/x-icon">
+  <title>Mnemosyne</title>
+</head>
+<body>
+  <div class="home-container">
+    <h1>Mnemosyne</h1>
+    <p>Welcome to Mnemosyne, a face recognition app.</p>
+    <button class="button" onclick="navigateTo('register')">Register Face</button>
+    <button class="button" onclick="navigateTo('verify')">Verify Face</button>
+  </div>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
