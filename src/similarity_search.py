@@ -2,7 +2,7 @@ import chromadb
 from face_index import get_face_embedding
 
 chroma_client= chromadb.PersistentClient(path='vector_db')
-collection = collection = chroma_client.get_collection(name="Face_collection")
+collection = chroma_client.get_collection(name="Face_collection")
 
 img_path = 'assets\centralized_face.png'
 face_embedding= get_face_embedding(img_path= img_path, model_name='VGG-Face')
