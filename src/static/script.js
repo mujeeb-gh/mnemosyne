@@ -22,21 +22,21 @@ const captureImage = () => {
       image: imageData,
     }),
   })
-    .then((response) => response.json())
-    .then((data) => {
+    .then((response) => response.json().then((data) => ({ status: response.status, body: data })))
+    .then(({ status, body }) => {
       const statusDiv = document.getElementById("status");
       const captureButton = document.getElementById("captureButton");
       const tryAgainButton = document.getElementById("tryAgainButton");
       const confirmButton = document.getElementById("confirmButton");
-      if (data.error) {
+      if (status !== 200) {
         statusDiv.className = "error";
-        statusDiv.textContent = data.error;
+        statusDiv.textContent = body.error || body.message;
         captureButton.style.display = "none";
         tryAgainButton.style.display = "block";
         confirmButton.disabled = true;
       } else {
         statusDiv.className = "success";
-        statusDiv.textContent = `${data.message} Quality: ${data.quality}, Anti-Spoofing: ${data.anti_spoofing_confidence}`;
+        statusDiv.textContent = `${body.message} Quality: ${body.quality}, Anti-Spoofing: ${body.anti_spoofing_confidence}`;
         tryAgainButton.style.display = "none";
         confirmButton.disabled = false;
       }
