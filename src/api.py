@@ -45,6 +45,11 @@ def register():
                 "created_on": datetime.now().isoformat()
             }
             matric_no = data.get("matric_no")
+            
+            session['user_data'] = {
+                "matric_no": matric_no,
+                "metadata": metadata,
+            }
 
             # Upsert the metadata with the unique ID
             collection.add(
@@ -57,7 +62,16 @@ def register():
         except Exception as e:
             logging.exception(f"Unexpected error: {str(e)}")
             return jsonify({"error": str(e)}), 500
-    return render_template('register.html') 
+    
+    session['mode'] = 'register'
+    return render_template('register.html')
+
+@app.route('/verify', methods=['GET', 'POST'])
+def verify():
+    if request.method == 'POST':
+        pass
+    session['mode'] = 'verify'
+    return render_template('verify.html')
 
 @app.route('/face/capture', methods=['GET', 'POST'])
 def capture_face():
@@ -122,7 +136,7 @@ def capture_face():
                 if spoof_confidence == False:
                     cv2.imwrite(ASSETS_DIR / f'spoofed_{uuid.uuid4()}.png', face_img)
                     logging.warning("Spoofed Image Detected, Use Real Face!!")
-                    return jsonify({"message": "Spoofed Image Detected, Use Real Face!!"}), 400
+                    return jsonify({"error": "Spoofed Image Detected, Use Real Face!!"}), 400
 
                 if quality < 45:
                     cv2.imwrite(ASSETS_DIR / f'centralized_face_{(uuid.uuid4())}.png', face_img)
@@ -137,7 +151,7 @@ def capture_face():
                     }), 200
                 else:
                     return jsonify({
-                        "message": "Image quality too low",
+                        "error": "Image quality too low",
                         "quality": quality,
                         "anti_spoofing_confidence": spoof_confidence
                     }), 400

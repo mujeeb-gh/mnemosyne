@@ -25,19 +25,38 @@ const captureImage = () => {
     .then((response) => response.json())
     .then((data) => {
       const statusDiv = document.getElementById("status");
+      const captureButton = document.getElementById("captureButton");
+      const tryAgainButton = document.getElementById("tryAgainButton");
+      const confirmButton = document.getElementById("confirmButton");
       if (data.error) {
         statusDiv.className = "error";
         statusDiv.textContent = data.error;
+        captureButton.style.display = "none";
+        tryAgainButton.style.display = "block";
+        confirmButton.disabled = true;
       } else {
         statusDiv.className = "success";
         statusDiv.textContent = `${data.message} Quality: ${data.quality}, Anti-Spoofing: ${data.anti_spoofing_confidence}`;
+        tryAgainButton.style.display = "none";
+        confirmButton.disabled = false;
       }
     })
     .catch((error) => {
       const statusDiv = document.getElementById("status");
       statusDiv.className = "error";
       statusDiv.textContent = "Error: " + error.message;
+      const captureButton = document.getElementById("captureButton");
+      const tryAgainButton = document.getElementById("tryAgainButton");
+      const confirmButton = document.getElementById("confirmButton");
+      captureButton.style.display = "none";
+      tryAgainButton.style.display = "block";
+      confirmButton.disabled = true;
     });
+};
+
+const confirmCapture = () => {
+  // Implement the logic for confirming the capture
+  alert("Capture confirmed!");
 };
 
 const submitRegistration = () => {
@@ -83,7 +102,7 @@ const submitRegistration = () => {
       statusDiv.textContent = "Error: " + error.message;
     });
 
-    navigateTo('face/capture');
+  navigateTo("face/capture");
 };
 
 const changeVideoSource = () => {
@@ -96,7 +115,10 @@ const changeVideoSource = () => {
     video.setAttribute("src", "");
     const ipWebcamUrl = ipWebcamUrlInput.value;
     if (ipWebcamUrl) {
-      video.setAttribute("src", `/video?source=${encodeURIComponent(ipWebcamUrl)}&t=${Date.now()}`);
+      video.setAttribute(
+        "src",
+        `/video?source=${encodeURIComponent(ipWebcamUrl)}&t=${Date.now()}`
+      );
     }
   } else if (videoSourceSelect.value === "default") {
     ipWebcamUrlInput.style.display = "none";
