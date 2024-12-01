@@ -10,14 +10,35 @@
 <body>
   <div class="container">
     <h1>Register</h1>
-    <form id="registerForm">
-      <input type="text" id="matric_no" placeholder="Matric Number" required>
-      <input type="text" id="name" placeholder="Name" required>
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="text" id="program" placeholder="Program" required>
-      <input type="number" id="year_of_study" placeholder="Year of Study" required>
-      <input type="date" id="date_of_birth" placeholder="Date of Birth" required>
-      <input type="tel" id="phone_number" placeholder="Phone Number" required>
+    <form id="registerForm" class="register-form">
+      <div class="form-group">
+        <label for="matric_no">Matric Number:</label>
+        <input type="text" id="matric_no" class="form-control" placeholder="20/SCI01/001" required>
+      </div>
+      <div class="form-group">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name" class="form-control" placeholder="John Doe" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" class="form-control" placeholder="johndoe@email.com" required>
+      </div>
+      <div class="form-group">
+        <label for="program">Program:</label>
+        <input type="text" id="program" class="form-control" placeholder="Computer Science" required>
+      </div>
+      <div class="form-group">
+        <label for="year_of_study">Year of Study:</label>
+        <input type="number" id="year_of_study" class="form-control" placeholder="2020" required>
+      </div>
+      <div class="form-group">
+        <label for="date">Date of Birth:</label>
+        <input type="date" id="date_of_birth" class="form-control" required>
+      </div>
+      <div class="form-group">
+        <label for="tel">Phone Number</label>
+        <input type="tel" id="phone_number" class="form-control" placeholder="08123456789" required>
+      </div>
       <button type="button" class="button" onclick="submitRegistration()">Submit</button>
     </form>
     <div id="status"></div>

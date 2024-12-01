@@ -8,6 +8,7 @@
 #video {
     border: 2px solid #333;
     border-radius: 8px;
+    transform: scaleX(-1);
 }
 .button {
     padding: 10px 20px;
@@ -50,4 +51,18 @@
 .home-container p {
     font-size: 1.2em;
     margin-bottom: 40px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-control:focus {
+    border-color: #4CAF50;
+    outline: none;
 }

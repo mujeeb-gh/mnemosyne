@@ -13,7 +13,7 @@ const captureImage = () => {
 
   const imageData = canvas.toDataURL("image/jpeg");
 
-  fetch("/capture", {
+  fetch("/face/capture", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -57,7 +57,6 @@ const submitRegistration = () => {
     year_of_study,
     date_of_birth,
     phone_number,
-    created_on: new Date().toISOString()
   };
 
   fetch("/register", {
@@ -83,6 +82,8 @@ const submitRegistration = () => {
       statusDiv.className = "error";
       statusDiv.textContent = "Error: " + error.message;
     });
+
+    navigateTo('face/capture');
 };
 
 const changeVideoSource = () => {
