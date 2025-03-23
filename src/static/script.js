@@ -60,6 +60,11 @@ const confirmCapture = () => {
 };
 
 const submitRegistration = () => {
+  const form = document.getElementById("registerForm");
+  if (!form.checkValidity()) {
+    return;
+  }
+
   const matric_no = document.getElementById("matric_no").value;
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;

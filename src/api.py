@@ -8,6 +8,7 @@ from deepface import DeepFace
 from datetime import datetime
 from settings import ASSETS_DIR, VECTOR_DB_DIR
 from utils import generate_frames
+from dotenv import load_dotenv
 import cv2
 import numpy as np
 import logging
@@ -15,10 +16,12 @@ import base64
 import chromadb
 import uuid
 
+load_dotenv()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.environ.get("APP_SECRET_KEY")
 # Initialize the camera
 cap = cv2.VideoCapture(0)
 
