@@ -8,15 +8,11 @@
   <title>Mnemosyne</title>
 </head>
 <body>
-  <div class="container">
-    <select id="videoSourceSelect" onchange="changeVideoSource()">
-      <option value="default">Default Camera</option>
-      <option value="ip">IP Webcam</option>
-    </select>
-    <input type="text" id="ipWebcamUrl" placeholder="Enter IP Webcam URL" style="display:none;" />
-    <img id="video" src="{{ url_for('video') }}" width="640" height="480">
-    <button class="button" onclick="captureImage()">Capture Image</button>
-    <div id="status"></div>
+  <div class="home-container">
+    <h1>Mnemosyne</h1>
+    <p>Welcome to Mnemosyne, a face recognition app.</p>
+    <button class="button" onclick="navigateTo('register')">Register Face</button>
+    <button class="button" onclick="navigateTo('verify')">Verify Face</button>
   </div>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

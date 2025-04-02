@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 20px;
+        border: 1px solid red;
+        background-color: antiquewhite;
+      }
+      .button {
+        background-color: aqua;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <button class="button">Click Me!</button>
+      <button class="toggle">Toggle</button>
+    </div>
+
+    <script>
+      const containerBackground = document.querySelector('.container')
+      const button = document.getElementsByClassName('.button')
+      const toggle = document.querySelector('.toggle')
+
+      button.addEventListener('click', ()=> {
+        containerBackground.setAttribute('style', 'background-color:blue')
+      })
+      toggle.addEventListener('click', () => {
+        console.log(button.style.display)
+        if (button.getAttribute('style') === 'display:block') {
+          button.setAttribute('style', 'display:none')
+        } else if (button.getAttribute('style') === 'display:none') {
+          button.setAttribute('style', 'display:block')
+        }
+      })
+    </script>
+  </body>
+</html>

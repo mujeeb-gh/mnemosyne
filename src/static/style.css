@@ -8,6 +8,7 @@
 #video {
     border: 2px solid #333;
     border-radius: 8px;
+    transform: scaleX(-1);
 }
 .button {
     padding: 10px 20px;
@@ -33,4 +34,49 @@
 .error {
     background-color: #f2dede;
     color: #a94442;
+}
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    gap: 20px;
+}
+.home-container h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+.home-container p {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-control:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+#captureButton {
+    display: block;
+}
+#tryAgainButton {
+    background-color: #ffc107; /* Neutral amber color */
+    display: none;
+}
+#tryAgainButton:hover {
+    background-color: #ffb300; /* Slightly darker amber */
+}
+#confirmButton:disabled {
+    background-color: #9e9e9e;
+    cursor: not-allowed;
 }

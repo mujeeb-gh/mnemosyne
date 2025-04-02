@@ -168,6 +168,6 @@ assets/
 assets/centralized_face.png
 
 # Ignore vector database folder
-vector_db
+vector_db/
 
 

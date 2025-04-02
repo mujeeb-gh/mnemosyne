@@ -1,3 +1,7 @@
+const navigateTo = (page) => {
+  window.location.href = `/${page}`;
+};
+
 const captureImage = () => {
   const video = document.getElementById("video");
   const canvas = document.createElement("canvas");
@@ -9,7 +13,7 @@ const captureImage = () => {
 
   const imageData = canvas.toDataURL("image/jpeg");
 
-  fetch("/capture", {
+  fetch("/face/capture", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,6 +21,74 @@ const captureImage = () => {
     body: JSON.stringify({
       image: imageData,
     }),
+  })
+    .then((response) => response.json().then((data) => ({ status: response.status, body: data })))
+    .then(({ status, body }) => {
+      const statusDiv = document.getElementById("status");
+      const captureButton = document.getElementById("captureButton");
+      const tryAgainButton = document.getElementById("tryAgainButton");
+      const confirmButton = document.getElementById("confirmButton");
+      if (status !== 200) {
+        statusDiv.className = "error";
+        statusDiv.textContent = body.error || body.message;
+        captureButton.style.display = "none";
+        tryAgainButton.style.display = "block";
+        confirmButton.disabled = true;
+      } else {
+        statusDiv.className = "success";
+        statusDiv.textContent = `${body.message} Quality: ${body.quality}, Anti-Spoofing: ${body.anti_spoofing_confidence}`;
+        tryAgainButton.style.display = "none";
+        confirmButton.disabled = false;
+      }
+    })
+    .catch((error) => {
+      const statusDiv = document.getElementById("status");
+      statusDiv.className = "error";
+      statusDiv.textContent = "Error: " + error.message;
+      const captureButton = document.getElementById("captureButton");
+      const tryAgainButton = document.getElementById("tryAgainButton");
+      const confirmButton = document.getElementById("confirmButton");
+      captureButton.style.display = "none";
+      tryAgainButton.style.display = "block";
+      confirmButton.disabled = true;
+    });
+};
+
+const confirmCapture = () => {
+  // Implement the logic for confirming the capture
+  alert("Capture confirmed!");
+};
+
+const submitRegistration = () => {
+  const form = document.getElementById("registerForm");
+  if (!form.checkValidity()) {
+    return;
+  }
+
+  const matric_no = document.getElementById("matric_no").value;
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const program = document.getElementById("program").value;
+  const year_of_study = document.getElementById("year_of_study").value;
+  const date_of_birth = document.getElementById("date_of_birth").value;
+  const phone_number = document.getElementById("phone_number").value;
+
+  const data = {
+    matric_no,
+    name,
+    email,
+    program,
+    year_of_study,
+    date_of_birth,
+    phone_number,
+  };
+
+  fetch("/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -26,7 +98,7 @@ const captureImage = () => {
         statusDiv.textContent = data.error;
       } else {
         statusDiv.className = "success";
-        statusDiv.textContent = `${data.message} Quality: ${data.quality}, Anti-Spoofing: ${data.anti_spoofing_confidence}`;
+        statusDiv.textContent = data.message;
       }
     })
     .catch((error) => {
@@ -34,6 +106,8 @@ const captureImage = () => {
       statusDiv.className = "error";
       statusDiv.textContent = "Error: " + error.message;
     });
+
+  navigateTo("face/capture");
 };
 
 const changeVideoSource = () => {
@@ -46,7 +120,10 @@ const changeVideoSource = () => {
     video.setAttribute("src", "");
     const ipWebcamUrl = ipWebcamUrlInput.value;
     if (ipWebcamUrl) {
-      video.setAttribute("src", `/video?source=${encodeURIComponent(ipWebcamUrl)}&t=${Date.now()}`);
+      video.setAttribute(
+        "src",
+        `/video?source=${encodeURIComponent(ipWebcamUrl)}&t=${Date.now()}`
+      );
     }
   } else if (videoSourceSelect.value === "default") {
     ipWebcamUrlInput.style.display = "none";
